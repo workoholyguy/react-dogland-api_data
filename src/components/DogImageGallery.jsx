@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
-import DogCard from "./DogCard"; // Import the DogCard component
+import { Link } from "react-router-dom";
+import DogCard from "./DogCard";
+import WeightChart from "./WeightChart";
 const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 const DogImageGallery = () => {
-  const [dogImages, setDogImages] = useState([]); // List of dog images with breed info
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
-  const [filteredResults, setFilteredResults] = useState([]); // State for filtered results
-  const [breedsMap, setBreedsMap] = useState({}); // Map of dog ID to breed name
+  const [dogImages, setDogImages] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [breedWeights, setBreedWeights] = useState([]);
 
   useEffect(() => {
     const fetchDogImages = async () => {
-      const query = `https://api.thedogapi.com/v1/images/search?has_breeds=1&limit=20&api_key=${ACCESS_KEY}`;
+      const query = `https://api.thedogapi.com/v1/images/search?has_breeds=1&limit=50&api_key=${ACCESS_KEY}`;
       try {
         const response = await fetch(query);
         const result = await response.json();
-        setDogImages(result); // Storing result in state
-        setFilteredResults(result); // Initialize filtered results with all dogs
-        console.log(result);
+        setDogImages(result);
+        setFilteredResults(result);
+        calculateAverageWeights(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -25,51 +26,45 @@ const DogImageGallery = () => {
     fetchDogImages();
   }, []);
 
-  // Handle breed name extracted from InfoSection and store it in breedsMap
-  const handleBreedExtracted = (dogId, breedName) => {
-    setBreedsMap((prevBreedsMap) => ({
-      ...prevBreedsMap,
-      [dogId]: breedName,
-    }));
-  };
+  const calculateAverageWeights = (data) => {
+    const groupWeights = {};
+    data.forEach((dog) => {
+      const breed = dog.breeds?.[0];
+      if (breed && breed.breed_group && breed.weight?.metric) {
+        const weightValues = breed.weight.metric.split(" - ");
+        const minWeight = parseFloat(weightValues[0]);
+        const maxWeight = parseFloat(weightValues[1]);
+        const averageWeight = (minWeight + maxWeight) / 2;
 
-  // Search function to filter results by breed name
-  const searchDogs = (searchValue) => {
-    setSearchTerm(searchValue);
-    if (searchValue !== "") {
-      // Filter dogImages by the breed name stored in breedsMap
-      const filteredData = dogImages.filter((dog) =>
-        breedsMap[dog.id]?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilteredResults(filteredData);
-    } else {
-      setFilteredResults(dogImages); // Reset to show all dogs
-    }
+        if (!isNaN(averageWeight)) {
+          if (!groupWeights[breed.breed_group]) {
+            groupWeights[breed.breed_group] = { totalWeight: 0, count: 0 };
+          }
+          groupWeights[breed.breed_group].totalWeight += averageWeight;
+          groupWeights[breed.breed_group].count += 1;
+        }
+      }
+    });
+
+    const breedWeightsData = Object.entries(groupWeights).map(
+      ([group, { totalWeight, count }]) => ({
+        breedGroup: group,
+        averageWeight: (totalWeight / count).toFixed(2),
+      })
+    );
+    setBreedWeights(breedWeightsData);
   };
 
   return (
     <div style={galleryStyle}>
       <h1>Dog Adoption Gallery</h1>
-
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search by breed name"
-        value={searchTerm}
-        onChange={(e) => searchDogs(e.target.value)} // Call search function
-        style={searchBarStyle}
-      />
-
+      <WeightChart data={breedWeights} />
       <div style={gridStyle}>
         {filteredResults.length > 0 ? (
           filteredResults.map((dog) => (
-            <DogCard
-              key={dog.id}
-              dog={dog}
-              onBreedExtracted={(breedName) =>
-                handleBreedExtracted(dog.id, breedName)
-              }
-            /> // Pass callback to DogCard
+            <Link key={dog.id} to={`/dog/${dog.id}`}>
+              <DogCard dog={dog} />
+            </Link>
           ))
         ) : (
           <p>No dogs found matching the search term.</p>
@@ -79,25 +74,12 @@ const DogImageGallery = () => {
   );
 };
 
-// Styling for the gallery and grid layout
-const galleryStyle = {
-  padding: "20px",
-  textAlign: "center",
-};
-
+const galleryStyle = { padding: "20px", textAlign: "center" };
 const gridStyle = {
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "center",
   gap: "20px",
-};
-
-// Style for the search bar
-const searchBarStyle = {
-  padding: "10px",
-  width: "300px",
-  marginBottom: "20px",
-  fontSize: "16px",
 };
 
 export default DogImageGallery;

@@ -1,36 +1,30 @@
+# Web Development Project 6 - *Name of App Here*
 
-# Web Development Project 5 - **Dog Adoption Gallery**
+Submitted by: **Your Name Here**
 
-Submitted by: **Omar Madjitov**
+This web app: **insert description**
 
-This web app: **Displays a gallery of adoptable dogs with detailed breed information, allows users to filter dogs by breed group, and shows key statistics about the dog data fetched from a public API.**
-
-Time spent: **10** hours spent in total
+Time spent: **X** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-- [x] **The list displays a list of data fetched using an API call**
-- [x] **Data uses the useEffect React hook and async/await syntax**
-- [x] **The app dashboard includes at least three summary statistics about the data such as:**
-  - [x] *Total number of breeds*
-  - [x] *Average weight of dogs*
-  - [x] *Average lifespan of dogs*
-- [x] **A search bar allows the user to search for an item in the fetched data**
-- [x] **Multiple different filters (2+) allow the user to filter items in the database by specified categories**
-  - [x] *Filter by breed group using buttons*
+- [ ] **The app includes at least one unique chart developed using the fetched data that tell an interesting story**
+- [ ] **Clicking on an item in the list view displays more details about it**
+  - [ ] To ensure an accurate grade, your sidebar **must** be viewable when showing the details view in your recording.
+- [ ] **Clicking on an item has a direct, unique link to that item's detail view page**
+  - [ ] To ensure an accurate grade, the URL/address bar of your web browser **must** be viewable in your recording.  
+
 
 The following **optional** features are implemented:
 
-- [x] Multiple filters can be applied simultaneously
-- [ ] Filters use different input types such as a text input, a selection, or a slider
-- [ ] The user can enter specific bounds for filter values
+- [ ] The site's customized dashboard contains more content that explains what is interesting about the data
+- [ ] The site allows users to toggle between different data visualizations
 
 The following **additional** features are implemented:
 
-* [ ] List of all unique breed groups with dynamic buttons for filtering
-* [ ] Detailed dog cards with breed information, including weight, life span, and temperament
+* [ ] List anything else that you added to improve the site's functionality!
 
 ## Video Walkthrough
 
@@ -47,11 +41,11 @@ GIF created with ...
 
 ## Notes
 
-One of the challenges encountered was correctly extracting breed information and ensuring it was used consistently for both displaying details and filtering by breed group. Another challenge was handling edge cases where some dogs lacked specific breed data, which required careful error handling to avoid breaking the app.
+Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright 2024 Omar Madjitov
+    Copyright [yyyy] [name of copyright owner]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

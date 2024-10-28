@@ -1,5 +1,6 @@
+// App.jsx
 import React from "react";
-import DogImageGallery from "./components/DogImageGallery"; // Import DogImageGallery
+import DogImageGallery from "./components/DogImageGallery";
 
 function App() {
   return (
