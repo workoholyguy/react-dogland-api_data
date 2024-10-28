@@ -1,8 +1,8 @@
-# Web Development Project 6 - *Name of App Here*
+# Web Development Project 6 - Dog Adoption Gallery
 
-Submitted by: **Your Name Here**
+Submitted by: **Omar Madjitov**
 
-This web app: **insert description**
+This web app: **Allows users to explore and view different dog breeds with details on their characteristics. Users can view each dog's details on a separate page, and a chart displays a distribution of weights by breed category.**
 
 Time spent: **X** hours spent in total
 
@@ -10,21 +10,21 @@ Time spent: **X** hours spent in total
 
 The following **required** functionality is completed:
 
-- [ ] **The app includes at least one unique chart developed using the fetched data that tell an interesting story**
-- [ ] **Clicking on an item in the list view displays more details about it**
-  - [ ] To ensure an accurate grade, your sidebar **must** be viewable when showing the details view in your recording.
-- [ ] **Clicking on an item has a direct, unique link to that item's detail view page**
-  - [ ] To ensure an accurate grade, the URL/address bar of your web browser **must** be viewable in your recording.  
-
+- [x] **The app includes at least one unique chart developed using the fetched data that tells an interesting story**
+  - Weight distribution chart shows the number of breeds within specific weight ranges.
+- [x] **Clicking on an item in the list view displays more details about it**
+  - Each dog card links to a unique details view where additional breed information is displayed.
+- [x] **Clicking on an item has a direct, unique link to that item's detail view page**
+  - Unique URLs for each dog breed’s detail view are visible in the address bar.
 
 The following **optional** features are implemented:
 
-- [ ] The site's customized dashboard contains more content that explains what is interesting about the data
-- [ ] The site allows users to toggle between different data visualizations
+- [ ] The site's customized dashboard contains more content that explains what is interesting about the data.
+- [ ] The site allows users to toggle between different data visualizations.
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you added to improve the site's functionality!
+* [x] **Back Home button** on each detail page for easy navigation.
 
 ## Video Walkthrough
 
@@ -41,11 +41,11 @@ GIF created with ...
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Some challenges encountered while building the app included handling CORS errors and rate limits from the Dog API, which required us to limit fetch requests and ensure that the API key was correctly configured. Additionally, managing React Router to dynamically route each dog breed's unique detail page required careful setup to maintain smooth navigation.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2024] [Omar Madjitov]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

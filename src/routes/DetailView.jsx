@@ -1,11 +1,13 @@
-// DetailView.jsx
-import DogDetail from "../components/DogDetail";
+import CoinChart from "../components/CoinChart";
+import CoinDetail from "../components/CoinDetail";
 
 const DetailView = () => {
   return (
-    <div>
-      <DogDetail />
-    </div>
+    <>
+      <div className="detail-view-whole-page">
+        <CoinDetail />
+      </div>
+    </>
   );
 };
 

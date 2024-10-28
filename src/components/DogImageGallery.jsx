@@ -1,3 +1,4 @@
+// DogImageGallery.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DogCard from "./DogCard";
@@ -6,8 +7,7 @@ const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 const DogImageGallery = () => {
   const [dogImages, setDogImages] = useState([]);
-  const [filteredResults, setFilteredResults] = useState([]);
-  const [breedWeights, setBreedWeights] = useState([]);
+  const [weightDistribution, setWeightDistribution] = useState([]);
 
   useEffect(() => {
     const fetchDogImages = async () => {
@@ -16,8 +16,7 @@ const DogImageGallery = () => {
         const response = await fetch(query);
         const result = await response.json();
         setDogImages(result);
-        setFilteredResults(result);
-        calculateAverageWeights(result);
+        calculateWeightDistribution(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -26,43 +25,48 @@ const DogImageGallery = () => {
     fetchDogImages();
   }, []);
 
-  const calculateAverageWeights = (data) => {
-    const groupWeights = {};
+  const calculateWeightDistribution = (data) => {
+    const categories = {
+      "0-10 kg": 0,
+      "10-20 kg": 0,
+      "20-30 kg": 0,
+      "30-40 kg": 0,
+      "40+ kg": 0,
+    };
+
     data.forEach((dog) => {
       const breed = dog.breeds?.[0];
-      if (breed && breed.breed_group && breed.weight?.metric) {
-        const weightValues = breed.weight.metric.split(" - ");
-        const minWeight = parseFloat(weightValues[0]);
-        const maxWeight = parseFloat(weightValues[1]);
-        const averageWeight = (minWeight + maxWeight) / 2;
-
-        if (!isNaN(averageWeight)) {
-          if (!groupWeights[breed.breed_group]) {
-            groupWeights[breed.breed_group] = { totalWeight: 0, count: 0 };
-          }
-          groupWeights[breed.breed_group].totalWeight += averageWeight;
-          groupWeights[breed.breed_group].count += 1;
+      if (breed && breed.weight?.metric) {
+        const weight = parseFloat(breed.weight.metric.split(" ")[0]);
+        if (!isNaN(weight)) {
+          if (weight <= 10) categories["0-10 kg"] += 1;
+          else if (weight <= 20) categories["10-20 kg"] += 1;
+          else if (weight <= 30) categories["20-30 kg"] += 1;
+          else if (weight <= 40) categories["30-40 kg"] += 1;
+          else categories["40+ kg"] += 1;
         }
       }
     });
 
-    const breedWeightsData = Object.entries(groupWeights).map(
-      ([group, { totalWeight, count }]) => ({
-        breedGroup: group,
-        averageWeight: (totalWeight / count).toFixed(2),
-      })
+    const weightDistributionData = Object.entries(categories).map(
+      ([range, count]) => ({ weightRange: range, count })
     );
-    setBreedWeights(breedWeightsData);
+    setWeightDistribution(weightDistributionData);
   };
 
   return (
     <div style={galleryStyle}>
       <h1>Dog Adoption Gallery</h1>
-      <WeightChart data={breedWeights} />
+      <WeightChart data={weightDistribution} />
+
       <div style={gridStyle}>
-        {filteredResults.length > 0 ? (
-          filteredResults.map((dog) => (
-            <Link key={dog.id} to={`/dog/${dog.id}`}>
+        {dogImages.length > 0 ? (
+          dogImages.map((dog) => (
+            <Link
+              key={dog.id}
+              to={`/dog/${dog.id}`}
+              style={{ textDecoration: "none" }}
+            >
               <DogCard dog={dog} />
             </Link>
           ))

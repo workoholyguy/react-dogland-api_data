@@ -1,5 +1,7 @@
+// DogDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+
 const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 const DogDetail = () => {
@@ -21,19 +23,10 @@ const DogDetail = () => {
   }, [id]);
 
   return (
-    <div style={{ padding: "2%" }}>
-      <Link to="/" style={buttonStyle}>
-        Home
-      </Link>
+    <div style={{ padding: "20px" }}>
+      <Link to="/">← Back to Gallery</Link>
       {dogDetails ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
+        <div style={{ textAlign: "center" }}>
           <h2>{dogDetails.breeds[0]?.name || "Unknown Breed"}</h2>
           <img src={dogDetails.url} alt="Dog" style={{ width: "50%" }} />
           <p>
@@ -61,17 +54,6 @@ const DogDetail = () => {
       )}
     </div>
   );
-};
-
-const buttonStyle = {
-  display: "inline-block",
-  padding: "10px 20px",
-  marginBottom: "20px",
-  textDecoration: "none",
-  color: "#fff",
-  backgroundColor: "#007bff",
-  borderRadius: "5px",
-  textAlign: "center",
 };
 
 export default DogDetail;
